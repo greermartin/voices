@@ -9,7 +9,7 @@
     
     <xsl:output method="xml" indent="yes" encoding="UTF-8"/>
    
-   <!-- Removes "#" that precedes Location and Camp codes/IDs in Event elements and interview locations -->
+   <!-- Removes "#" that precedes Location and Camp codes/IDs in event and birth elements and interview locations -->
    
     <xsl:template match="node()|@*">
         <xsl:copy>
@@ -31,6 +31,19 @@
         </xsl:choose>
     </xsl:template>
   
+    <xsl:template match="tei:birth/@ref">
+        <xsl:variable name="code" select="."/>
+        <xsl:choose>
+            <xsl:when test="contains($code,'#')">
+                <xsl:attribute name="ref">
+                    <xsl:value-of select="substring-after($code,'#')"/>
+                </xsl:attribute>
+            </xsl:when>
+            <xsl:otherwise>
+                <xsl:copy/>
+            </xsl:otherwise>
+        </xsl:choose>
+    </xsl:template>
   
     <xsl:template match="tei:event/@ref">
         <xsl:variable name="code" select="."/>
@@ -45,8 +58,6 @@
         </xsl:otherwise>
         </xsl:choose>
     </xsl:template>
-    
-    
     
 </xsl:stylesheet>
 
